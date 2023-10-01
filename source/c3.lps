@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="c3.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="C3"/>
+        <CursorPos X="13" Y="19"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="main.pas"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="explorefrm.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ExploreForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ExploreFrm"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="49" Y="9"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="s3graph.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="S3Graph"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="s3objects.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="S3Objects"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="7">
+      <Position>
+        <Filename Value="c3.lpr"/>
+        <Caret Line="8" Column="15"/>
+      </Position>
+      <Position>
+        <Filename Value="c3.lpr"/>
+        <Caret Line="19" Column="13"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="361" TopLine="324"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="302" Column="61" TopLine="289"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="54" Column="12" TopLine="32"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="281" TopLine="277"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="9" Column="68"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="31" Column="18" TopLine="11"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
