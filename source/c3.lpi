@@ -58,6 +58,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="S3Objects"/>
       </Unit>
+      <Unit>
+        <Filename Value="c3.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -76,6 +80,11 @@
         </Win32>
       </Options>
     </Linking>
+    <Other>
+      <CompilerMessages>
+        <IgnoredMessages idx5024="True"/>
+      </CompilerMessages>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions>

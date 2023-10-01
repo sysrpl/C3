@@ -10,7 +10,7 @@
 
 unit S3Objects;
 
-{$mode delphi}
+{$i c3.inc}
 
 interface
 
@@ -97,6 +97,12 @@ type
     property StorageClass: string read GetStorageClass;
   end;
 
+{ INullObject is used as a placeholder item for an empty folder }
+
+  INullObject = interface(IStorageObject)
+  ['{72BEAD59-D842-45ED-9F59-CED51E899223}']
+  end;
+
 { TTaskData }
 
   TTaskKind = (
@@ -161,6 +167,8 @@ type
     property OnTask: IDelegate<TTaskDataEvent> read GetOnTask;
   end;
 
+function NullObject(Folder: IFolder): INullObject;
+
 implementation
 
 { IChildObject }
@@ -168,7 +176,9 @@ implementation
 type
   IChildObject = interface
   ['{93EC0DB0-9D56-4E67-AD21-C2FA7C04A08C}']
+    function GetParent: IStorageContainer;
     procedure SetParent(Value: IStorageContainer);
+    property Parent: IStorageContainer read GetParent write SetParent;
   end;
 
 { TS3Object }
@@ -260,6 +270,21 @@ type
     function GetSize: Cardinal;
     function GetModified: TDateTime;
     function GetStorageClass: string;
+    { IChildObject }
+    procedure SetParent(Value: IStorageContainer);
+  end;
+
+{ TNullObject }
+
+  TNullObject = class(TS3Object, IStorageObject, IChildObject, INullObject)
+  private
+    FParent: IStorageContainer;
+    { IStorageObject }
+    function GetAcl: string;
+    procedure SetAcl(const Value: string);
+    function GetName: string;
+    function GetParent: IStorageContainer;
+    procedure Refresh;
     { IChildObject }
     procedure SetParent(Value: IStorageContainer);
   end;
@@ -447,7 +472,7 @@ begin
   FParent := Value;
 end;
 
-{ TFile.IStorageObject }
+{ TContent.IStorageObject }
 
 function TContent.GetAcl: string;
 begin
@@ -474,7 +499,7 @@ begin
 
 end;
 
-{ TFile.IFile }
+{ TContent.IFile }
 
 function TContent.GetSize: Cardinal;
 begin
@@ -491,11 +516,52 @@ begin
   Result := FStorageClass;
 end;
 
-{ TFile.IChildObject }
+{ TContent.IChildObject }
 
 procedure TContent.SetParent(Value: IStorageContainer);
 begin
   FParent := Value;
+end;
+
+{ TNullObject.IStorageObject }
+
+function TNullObject.GetAcl: string;
+begin
+  REsult := '';
+end;
+
+procedure TNullObject.SetAcl(const Value: string);
+begin
+end;
+
+function TNullObject.GetName: string;
+begin
+  Result := '(this folder is empty)';
+end;
+
+function TNullObject.GetParent: IStorageContainer;
+begin
+  Result := FParent;
+end;
+
+procedure TNullObject.Refresh;
+begin
+end;
+
+{ TNullObject.IChildObject }
+
+procedure TNullObject.SetParent(Value: IStorageContainer);
+begin
+  FParent := Value;
+end;
+
+function NullObject(Folder: IFolder): INullObject;
+var
+  Child: IChildObject;
+begin
+  Child := TNullObject.Create(nil, '');
+  Child.Parent := Folder;
+  Result := Child as INullObject;
 end;
 
 { TTaskData }

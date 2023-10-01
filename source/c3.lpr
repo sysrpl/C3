@@ -10,7 +10,7 @@
 
 program C3;
 
-{$mode delphi}
+{$i c3.inc}
 
 uses
   Codebot.System,

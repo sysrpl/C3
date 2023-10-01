@@ -10,8 +10,7 @@
 
 unit ExploreFrm;
 
-{$mode delphi}
-{$WARN 5024 off : Parameter "$1" not used}
+{$i c3.inc}
 
 interface
 
@@ -19,6 +18,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, StdCtrls, ExtCtrls, PairSplitter,
   S3Objects, S3Graph,
   Codebot.System,
+  Codebot.Collections,
   Codebot.Text.Xml,
   Codebot.Networking.Storage,
   Codebot.Controls.Scrolling,
@@ -79,8 +79,12 @@ type
   private
     FManager: TS3Manager;
     FBucket: IBucket;
+    FObjects: IList<IStorageObject>;
     FRenderer: TS3Renderer;
     FTaskHeight: Integer;
+    procedure ObjectsRebuild;
+    function ObjectsGet(Index: Integer): IStorageObject;
+    function ObjectsCount: Integer;
     procedure HandleBusyChange(Sender: TObject; IsBusy: Boolean);
     procedure HandleTask(Sender: TObject; Data: TTaskData);
   end;
@@ -93,6 +97,9 @@ implementation
 {$R *.lfm}
 
 { TExploreForm }
+
+const
+  DefCapcity = 1000;
 
 procedure TExploreForm.FormCreate(Sender: TObject);
 const
@@ -115,6 +122,8 @@ begin
   TasksBox.Tag := PtrInt(TasksLabel);
   TasksLabel.Tag := PtrInt(TasksBox);
   TasksHeader.Tag := PtrInt(TasksBox);
+  FObjects := TInterfaces<IStorageObject>.Create;
+  FObjects.Capacity := DefCapcity;
   FManager := TS3Manager.Create(S3Configs.Amazon);
   FManager.OnBusyChange.Add(HandleBusyChange);
   FManager.OnTask.Add(HandleTask);
@@ -174,6 +183,49 @@ begin
     CanClose := True;
 end;
 
+procedure TExploreForm.ObjectsRebuild;
+
+  procedure AddItem(Item: IStorageObject);
+  var
+    Folder: IFolder;
+    Child: IStorageObject;
+  begin
+    FObjects.Add(Item);
+    if Item is IFolder then
+    begin
+      Folder := Item as IFolder;
+      if Folder.Opened then
+        if Folder.Count = 0 then
+          AddItem(NullObject(Folder))
+        else for Child in Folder do
+          AddItem(Child);
+    end;
+  end;
+
+var
+  Item: IStorageObject;
+begin
+  FObjects.Clear;
+  FObjects.Capacity := DefCapcity;
+  if FBucket = nil then
+    Exit;
+  for Item in FBucket do
+    AddItem(Item);
+end;
+
+function TExploreForm.ObjectsGet(Index: Integer): IStorageObject;
+begin
+  Result := nil;
+  if (Index < 0) or (Index > FObjects.Count - 1) then
+    Exit;
+  Result := FObjects[Index];
+end;
+
+function TExploreForm.ObjectsCount: Integer;
+begin
+  Result := FObjects.Count;
+end;
+
 procedure TExploreForm.HandleBusyChange(Sender: TObject; IsBusy: Boolean);
 begin
   BusyTimer.Enabled := IsBusy;
@@ -183,6 +235,7 @@ end;
 procedure TExploreForm.HandleTask(Sender: TObject; Data: TTaskData);
 var
   Bucket: IBucket;
+  I: Integer;
 begin
   case Data.Kind of
     taskListBuckets,
@@ -195,10 +248,14 @@ begin
       begin
         Bucket := Data.Target as IBucket;
         if Bucket = FBucket then
-          ObjectsBox.Count := Bucket.Count;
-        if ObjectsBox.Count = 0 then
-          ObjectsBox.Count := 1;
-        ObjectsBox.Invalidate;
+        begin
+          ObjectsRebuild;
+          ObjectsBox.Count := ObjectsCount;
+          if ObjectsBox.Count = 0 then
+            ObjectsBox.Count := 1;
+          ObjectsBox.ItemIndex := 0;
+          ObjectsBox.Invalidate;
+        end;
       end;
   end;
   TasksBox.Count := FManager.Tasks.Count;
@@ -230,11 +287,12 @@ end;
 
 procedure TExploreForm.ObjectsBoxButtonCalc(Sender: TObject;
   ItemIndex: Integer; Rect: TRectI; var Buttons: TButtonRects);
+var
+  Obj: IStorageObject;
 begin
-  Buttons.Length := 1;
-  Rect.Right := 20;
-  Rect.X := 4;
-  Buttons[0] := Rect;
+  Obj := ObjectsGet(ItemIndex);
+  if Obj <> nil then
+    FRenderer.ObjectsButtonCalc(Obj, ItemIndex, Rect, Buttons);
 end;
 
 procedure TExploreForm.ObjectsBoxButtonClick(Sender: TObject; ItemIndex,
@@ -243,13 +301,13 @@ var
   Obj: IStorageObject;
   I: Integer;
 begin
-  if (FBucket <> nil) and (ItemIndex < FBucket.Count) then
+  Obj := ObjectsGet(ItemIndex);
+  if Obj <> nil then
   begin
-    Obj := FBucket[ItemIndex];
     Obj.Checked := not Obj.Checked;
     for I := 0 to ObjectsBox.Count - 1 do
       if ObjectsBox.IsSelected(I) then
-        FBucket[I].Checked := Obj.Checked;
+        FObjects[I].Checked := Obj.Checked;
     ObjectsBox.Invalidate;
   end;
 end;
@@ -259,11 +317,11 @@ procedure TExploreForm.ObjectsBoxButtonDraw(Sender: TObject; Surface: ISurface;
 var
   Obj: IStorageObject;
 begin
-  if (FBucket <> nil) and (ItemIndex < FBucket.Count) then
+  Obj := ObjectsGet(ItemIndex);
+  if Obj <> nil then
   begin
-    Obj := FBucket[ItemIndex];
-    if Obj.Checked or ObjectsBox.IsSelected(ItemIndex) or (ObjectsBox.ItemIndex = ItemIndex) then
-      FRenderer.DrawObjectButton(Surface, Obj, ItemIndex, Button, Rect, State);
+    {if Obj.Checked or ObjectsBox.IsSelected(ItemIndex) or (ObjectsBox.ItemIndex = ItemIndex) then
+      FRenderer.DrawObjectButton(Surface, Obj, ItemIndex, Button, Rect, State);}
   end;
 end;
 
@@ -272,13 +330,11 @@ procedure TExploreForm.ObjectsBoxDrawItem(Sender: TObject; Surface: ISurface;
 var
   Obj: IStorageObject;
 begin
-  if (FBucket = nil) or (Index > FBucket.Count - 1) then
-    FRenderer.DrawObjectEmpty(Surface, Rect, Index)
+  Obj := ObjectsGet(Index);
+  if Obj <> nil then
+    FRenderer.DrawObject(Surface, Obj, Rect, ObjectsHeader.GetColWidths, State)
   else
-  begin
-    Obj := FBucket[Index];
-    FRenderer.DrawObject(Surface, Obj, Rect, ObjectsHeader.GetColWidths, State);
-  end;
+    FRenderer.DrawObjectEmpty(Surface, Rect, Index);
 end;
 
 procedure TExploreForm.TasksBoxDrawItem(Sender: TObject; Surface: ISurface;
@@ -341,8 +397,10 @@ begin
       BucketTimer.Enabled := True
     else
       FBucket.Query;
-    if FBucket.Count > 0 then
-      ObjectsBox.Count := FBucket.Count
+    ObjectsRebuild;
+    I := ObjectsCount;
+    if I > 0 then
+      ObjectsBox.Count := I
     else
       ObjectsBox.Count := 1;
   end

@@ -275,7 +275,7 @@ object ExploreForm: TExploreForm
   end
   object BucketTimer: TTimer
     Enabled = False
-    Interval = 500
+    Interval = 250
     OnTimer = BucketTimerTimer
     Left = 48
     Top = 56

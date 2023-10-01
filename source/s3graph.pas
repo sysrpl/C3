@@ -10,7 +10,7 @@
 
 unit S3Graph;
 
-{$mode delphi}
+{$i c3.inc}
 
 interface
 
@@ -65,6 +65,8 @@ type
     FSmallIcon: IFont;
   public
     constructor Create(Font: TFont);
+    procedure ObjectsButtonCalc(Obj: IStorageObject; Index: Integer;
+      Rect: TRectI; var Buttons: TButtonRects);
     procedure DrawBucket(Surface: ISurface; Bucket: IBucket; Rect: TRectI;
       State: TDrawState);
     procedure DrawObjectEmpty(Surface: ISurface; Rect: TRectI; Index: Integer);
@@ -213,6 +215,12 @@ const
 begin
   DrawText(Rect);
   DrawIcon(Rect);
+end;
+
+procedure TS3Renderer.ObjectsButtonCalc(Obj: IStorageObject; Index: Integer;
+  Rect: TRectI; var Buttons: TButtonRects);
+begin
+
 end;
 
 procedure TS3Renderer.DrawObjectEmpty(Surface: ISurface; Rect: TRectI; Index: Integer);

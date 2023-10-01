@@ -8,7 +8,7 @@
         <Filename Value="c3.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="C3"/>
-        <CursorPos X="13" Y="19"/>
+        <CursorPos Y="14"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit>
@@ -28,7 +28,8 @@
         <UnitName Value="ExploreFrm"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="49" Y="9"/>
+        <TopLine Value="379"/>
+        <CursorPos X="7" Y="404"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -37,55 +38,184 @@
         <Filename Value="s3graph.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="S3Graph"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
+        <EditorIndex Value="4"/>
+        <CursorPos X="37" Y="12"/>
         <UsageCount Value="20"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="s3objects.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="S3Objects"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="39"/>
+        <CursorPos X="32" Y="66"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../fpc/rtl/unix/classes.pp"/>
+        <UnitName Value="Classes"/>
         <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.system.pas"/>
+        <UnitName Value="Codebot.System"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="c3.inc"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
         <UsageCount Value="20"/>
       </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.graphics.types.pas"/>
+        <UnitName Value="Codebot.Graphics.Types"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="105"/>
+        <CursorPos X="30" Y="124"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot_controls/codebot.controls.scrolling.pas"/>
+        <UnitName Value="Codebot.Controls.Scrolling"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="284"/>
+        <CursorPos X="29" Y="299"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+        <UnitName Value="Codebot.Collections"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="687"/>
+        <CursorPos X="8" Y="719"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="7">
+    <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="c3.lpr"/>
-        <Caret Line="8" Column="15"/>
-      </Position>
-      <Position>
-        <Filename Value="c3.lpr"/>
-        <Caret Line="19" Column="13"/>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="81" Column="22" TopLine="61"/>
       </Position>
       <Position>
         <Filename Value="explorefrm.pas"/>
-        <Caret Line="361" TopLine="324"/>
+        <Caret Line="67" Column="5" TopLine="31"/>
       </Position>
       <Position>
         <Filename Value="explorefrm.pas"/>
-        <Caret Line="302" Column="61" TopLine="289"/>
+        <Caret Line="127" TopLine="94"/>
       </Position>
       <Position>
         <Filename Value="explorefrm.pas"/>
-        <Caret Line="54" Column="12" TopLine="32"/>
+        <Caret Line="86" Column="5" TopLine="63"/>
       </Position>
       <Position>
         <Filename Value="explorefrm.pas"/>
-        <Caret Line="281" TopLine="277"/>
+        <Caret Line="188" TopLine="172"/>
       </Position>
       <Position>
         <Filename Value="explorefrm.pas"/>
-        <Caret Line="9" Column="68"/>
+        <Caret Line="86" Column="15" TopLine="51"/>
       </Position>
       <Position>
         <Filename Value="explorefrm.pas"/>
-        <Caret Line="31" Column="18" TopLine="11"/>
+        <Caret Line="189" Column="34" TopLine="174"/>
+      </Position>
+      <Position>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+        <Caret Line="258" Column="66" TopLine="238"/>
+      </Position>
+      <Position>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+        <Caret Line="79" Column="83" TopLine="47"/>
+      </Position>
+      <Position>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+        <Caret Line="96" Column="20" TopLine="64"/>
+      </Position>
+      <Position>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+        <Caret Line="221" Column="20" TopLine="189"/>
+      </Position>
+      <Position>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+        <Caret Line="247" Column="20" TopLine="215"/>
+      </Position>
+      <Position>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+        <Caret Line="281" Column="20" TopLine="249"/>
+      </Position>
+      <Position>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+        <Caret Line="421" Column="8" TopLine="389"/>
+      </Position>
+      <Position>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
+        <Caret Line="431" Column="29" TopLine="399"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="293" Column="25" TopLine="271"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="334" Column="53" TopLine="306"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="86" Column="15" TopLine="65"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="227" Column="27" TopLine="194"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="220" Column="44" TopLine="188"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="227" Column="27" TopLine="195"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="253" Column="42" TopLine="222"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="220" Column="44" TopLine="188"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="228" Column="27" TopLine="195"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="211" Column="6" TopLine="178"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="329" Column="44" TopLine="313"/>
+      </Position>
+      <Position>
+        <Filename Value="explorefrm.pas"/>
+        <Caret Line="406" Column="26" TopLine="380"/>
       </Position>
     </JumpHistory>
     <RunParams>
