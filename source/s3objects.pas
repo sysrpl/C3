@@ -29,6 +29,7 @@ type
   IBucket = interface;
   IFolder = interface;
   IContent = interface;
+  INullObject = interface;
 
 { List types }
 
@@ -39,6 +40,7 @@ type
 
   IStorageObject = interface
   ['{C508CA02-A75F-4CC6-87DD-F444C56AE30C}']
+    function GetBucket: IBucket;
     function GetAcl: string;
     procedure SetAcl(const Value: string);
     function GetChecked: Boolean;
@@ -46,6 +48,7 @@ type
     function GetName: string;
     function GetParent: IStorageContainer;
     procedure Refresh;
+    property Bucket: IBucket read GetBucket;
     property Acl: string read GetAcl write SetAcl;
     property Name: string read GetName;
     property Checked: Boolean read GetChecked write SetChecked;
@@ -60,6 +63,7 @@ type
     function GetCount: Integer;
     function GetItem(Index: Integer): IStorageObject;
     function GetEnumerator: IEnumerator<IStorageObject>;
+    function Contains(Obj: IStorageObject): Boolean;
     procedure Query;
     property Queried: Boolean read GetQueried;
     property Count: Integer read GetCount;
@@ -82,7 +86,9 @@ type
   ['{170A5139-953C-4AE0-9C15-47C27F368D1A}']
     function GetOpened: Boolean;
     procedure SetOpened(Value: Boolean);
+    function GetNull: INullObject;
     property Opened: Boolean read GetOpened write SetOpened;
+    property Null: INullObject read GetNull;
   end;
 
 { IContent is a file, but file is a keyword so we use IContent as a synonym }
@@ -167,8 +173,6 @@ type
     property OnTask: IDelegate<TTaskDataEvent> read GetOnTask;
   end;
 
-function NullObject(Folder: IFolder): INullObject;
-
 implementation
 
 { IChildObject }
@@ -189,8 +193,10 @@ type
     FName: string;
     FChecked: Boolean;
   protected
+    function GetBucket: IBucket;
     function GetChecked: Boolean;
     procedure SetChecked(Value: Boolean);
+    function Contains(Obj: IStorageObject): Boolean;
     property Owner: TS3Manager read FOwner;
   public
     constructor Create(Owner: TS3Manager; Name: string); virtual;
@@ -230,6 +236,7 @@ type
     FParent: IStorageContainer;
     FQueried: Boolean;
     FOpened: Boolean;
+    FNull: INullObject;
     FList: IList<IStorageObject>;
     { IStorageObject }
     function GetAcl: string;
@@ -246,6 +253,7 @@ type
     { IFolder }
     function GetOpened: Boolean;
     procedure SetOpened(Value: Boolean);
+    function GetNull: INullObject;
     { IChildObject }
     procedure SetParent(Value: IStorageContainer);
   public
@@ -298,6 +306,16 @@ begin
   FName := Name;
 end;
 
+function TS3Object.GetBucket: IBucket;
+var
+  Obj: IStorageObject;
+begin
+  Obj := Self as IStorageObject;
+  while Obj.Parent <> nil do
+    Obj := Obj.Parent;
+  Result := Obj as IBucket;
+end;
+
 function TS3Object.GetChecked: Boolean;
 begin
   Result := FChecked;
@@ -306,6 +324,37 @@ end;
 procedure TS3Object.SetChecked(Value: Boolean);
 begin
   FChecked := Value;
+end;
+
+function TS3Object.Contains(Obj: IStorageObject): Boolean;
+var
+  Folder: IFolder;
+  Container: IStorageContainer;
+  Item: IStorageObject;
+begin
+  Result := False;
+  if Obj = nil then
+    Exit;
+  if (Obj is INullObject) and (Self is Folder) then
+  begin
+    Folder := Self as IFolder;
+    Result := Folder.Null = Obj as INullObject;
+    if Result then
+      Exit;
+  end;
+  if Self is IStorageContainer then
+  begin
+    Container := Self as IStorageContainer;
+    for Item in Container do
+      if Item = Obj then
+        Exit(True)
+      else if Item is IStorageContainer then
+      begin
+        Result := (Item as IStorageContainer).Contains(Obj);
+        if Result then
+          Exit(True);
+      end;
+  end;
 end;
 
 { TBucket }
@@ -392,9 +441,14 @@ end;
 { TFolder }
 
 constructor TFolder.Create(Owner: TS3Manager; Name: string);
+var
+  Child: IChildObject;
 begin
   inherited Create(Owner, Name);
   FList := TInterfaces<IStorageObject>.Create;
+  FNull := TNullObject.Create(Owner, 'Empty');
+  Child := FNull as IChildObject;
+  Child.Parent := Self;
 end;
 
 { IStorageObject.TFolder }
@@ -467,6 +521,13 @@ begin
     Query;
 end;
 
+function TFolder.GetNull: INullObject;
+begin
+  Result := FNull;
+end;
+
+{ TFolder.IChild }
+
 procedure TFolder.SetParent(Value: IStorageContainer);
 begin
   FParent := Value;
@@ -536,7 +597,7 @@ end;
 
 function TNullObject.GetName: string;
 begin
-  Result := '(this folder is empty)';
+  Result := 'Empty';
 end;
 
 function TNullObject.GetParent: IStorageContainer;
@@ -553,15 +614,6 @@ end;
 procedure TNullObject.SetParent(Value: IStorageContainer);
 begin
   FParent := Value;
-end;
-
-function NullObject(Folder: IFolder): INullObject;
-var
-  Child: IChildObject;
-begin
-  Child := TNullObject.Create(nil, '');
-  Child.Parent := Folder;
-  Result := Child as INullObject;
 end;
 
 { TTaskData }

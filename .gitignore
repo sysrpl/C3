@@ -2,6 +2,7 @@
 .git.remote
 backup
 lib
+c3
 *.lnk
 *.mdb
 *.tmp

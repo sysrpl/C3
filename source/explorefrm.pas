@@ -85,6 +85,8 @@ type
     procedure ObjectsRebuild;
     function ObjectsGet(Index: Integer): IStorageObject;
     function ObjectsCount: Integer;
+    function ObjectsIndex(Item: IStorageObject): Integer;
+    procedure FolderExpand(Folder: IFolder; Open: Boolean);
     procedure HandleBusyChange(Sender: TObject; IsBusy: Boolean);
     procedure HandleTask(Sender: TObject; Data: TTaskData);
   end;
@@ -196,7 +198,7 @@ procedure TExploreForm.ObjectsRebuild;
       Folder := Item as IFolder;
       if Folder.Opened then
         if Folder.Count = 0 then
-          AddItem(NullObject(Folder))
+          AddItem(Folder.Null)
         else for Child in Folder do
           AddItem(Child);
     end;
@@ -226,6 +228,11 @@ begin
   Result := FObjects.Count;
 end;
 
+function TExploreForm.ObjectsIndex(Item: IStorageObject): Integer;
+begin
+  Result := FObjects.IndexOf(Item);
+end;
+
 procedure TExploreForm.HandleBusyChange(Sender: TObject; IsBusy: Boolean);
 begin
   BusyTimer.Enabled := IsBusy;
@@ -235,7 +242,6 @@ end;
 procedure TExploreForm.HandleTask(Sender: TObject; Data: TTaskData);
 var
   Bucket: IBucket;
-  I: Integer;
 begin
   case Data.Kind of
     taskListBuckets,
@@ -285,6 +291,45 @@ begin
   TWinControl((Sender as TComponent).Tag).SetFocus;
 end;
 
+procedure TExploreForm.FolderExpand(Folder: IFolder; Open: Boolean);
+
+  function IsChild(Obj: IStorageObject): Boolean;
+  begin
+    Result := False;
+    if Obj = nil then
+      Exit;
+    if Obj.Parent = Folder then
+      Result := True
+    else
+      Result := IsChild(Obj.Parent);
+  end;
+
+var
+  Obj: IStorageObject;
+  Top, Index: Integer;
+begin
+  Folder.Opened := Open;
+  if Folder.Bucket <> FBucket then
+    Exit;
+  Top := ObjectsBox.TopIndex;
+  Index := ObjectsBox.ItemIndex;
+  Obj := nil;
+  if Index > -1 then
+  begin
+    Obj := ObjectsGet(Index);
+    if IsChild(Obj) then
+      Obj := Folder;
+  end;
+  ObjectsRebuild;
+  ObjectsBox.Count := ObjectsCount;
+  ObjectsBox.TopIndex := Top;
+  Index := ObjectsIndex(Obj);
+  if Index < 0 then
+    Index := 0;
+  ObjectsBox.ItemIndex := Index;
+  ObjectsBox.Invalidate;
+end;
+
 procedure TExploreForm.ObjectsBoxButtonCalc(Sender: TObject;
   ItemIndex: Integer; Rect: TRectI; var Buttons: TButtonRects);
 var
@@ -299,16 +344,20 @@ procedure TExploreForm.ObjectsBoxButtonClick(Sender: TObject; ItemIndex,
   Button: Integer);
 var
   Obj: IStorageObject;
+  Folder: IFolder;
   I: Integer;
 begin
   Obj := ObjectsGet(ItemIndex);
-  if Obj <> nil then
+  if (Obj <> nil) and (Obj is IFolder) then
   begin
-    Obj.Checked := not Obj.Checked;
+    Folder := Obj as IFolder;
+    FolderExpand(Folder, not Folder.Opened);
+    {Obj.Checked := not Obj.Checked;
+
     for I := 0 to ObjectsBox.Count - 1 do
       if ObjectsBox.IsSelected(I) then
-        FObjects[I].Checked := Obj.Checked;
-    ObjectsBox.Invalidate;
+        FObjects[I].Checked := Obj.Checked;}
+
   end;
 end;
 
@@ -320,8 +369,7 @@ begin
   Obj := ObjectsGet(ItemIndex);
   if Obj <> nil then
   begin
-    {if Obj.Checked or ObjectsBox.IsSelected(ItemIndex) or (ObjectsBox.ItemIndex = ItemIndex) then
-      FRenderer.DrawObjectButton(Surface, Obj, ItemIndex, Button, Rect, State);}
+    FRenderer.DrawObjectButton(Surface, Obj, ItemIndex, Button, Rect, State);
   end;
 end;
 

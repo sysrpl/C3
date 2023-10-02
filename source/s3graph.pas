@@ -34,8 +34,8 @@ const
   iconFolderOpened = '󰝰';
   iconFolderSelect = '󰉖';
   iconRefresh = '󱍷';
-  iconFile = '󰈔';
-  iconFileSelect = '󰈤';
+  iconContent = '󰈔';
+  iconContentSelect = '󰈤';
   iconImage = '󰈟';
   iconText = '󰈙';
   iconVideo = '󰈫';
@@ -54,6 +54,8 @@ const
   colorSuccess: TColor = $4AC38B;
   colorFail: TColor = $3539E5;
   colorCanceled: TColor = $007CF5;
+  colorFolder: TColor = $00B9FF;
+  colorContent: TColor = $9AA626;
 
 { TS3Renderer }
 
@@ -169,6 +171,44 @@ begin
   Rect.Inflate(-2, -1);
 end;
 
+function GetLevel(Obj: IStorageObject): Integer;
+begin
+  Result := 0;
+  while Obj <> nil do
+  begin
+    Obj := Obj.Parent;
+    Inc(Result);
+  end;
+end;
+
+function GetIndent(Obj: IStorageObject): Integer;
+const
+  Space = 22;
+var
+  I: Integer;
+begin
+  I := 0;
+  while Obj <> nil do
+  begin
+    Obj := Obj.Parent;
+    Inc(I);
+  end;
+  Result := I * Space;
+end;
+
+function GetColumn(const Rect: TRect; ColWidths: IntArray; Index: Integer): TRectI;
+var
+  I: Integer;
+begin
+  Result := Rect;
+  Result.Left := 0;
+  for I := 0 to Index  - 1 do
+    Result.Left := Result.Left + ColWidths[I];
+  Result.Width := ColWidths[Index];
+  Inflate(Result);
+end;
+
+
 procedure TS3Renderer.DrawBucket(Surface: ISurface; Bucket: IBucket; Rect: TRectI;
   State: TDrawState);
 const
@@ -220,7 +260,14 @@ end;
 procedure TS3Renderer.ObjectsButtonCalc(Obj: IStorageObject; Index: Integer;
   Rect: TRectI; var Buttons: TButtonRects);
 begin
-
+  if Obj is IFolder then
+  begin
+    Rect.Left := GetIndent(Obj);
+    Rect.Width := Rect.Height;
+    Rect.X := Rect.Left - Rect.Width;
+    Buttons.Length := 1;
+    Buttons[0] := Rect;
+  end;
 end;
 
 procedure TS3Renderer.DrawObjectEmpty(Surface: ISurface; Rect: TRectI; Index: Integer);
@@ -237,9 +284,14 @@ end;
 procedure TS3Renderer.DrawObject(Surface: ISurface; Obj: IStorageObject; Rect: TRectI; ColWidths: IntArray;
   State: TDrawState);
 var
+  IconRect: TRectI;
+  TextRect: TRectI;
+  Folder: IFolder;
+  Content: IContent;
+  S: string;
   B: TColorB;
 begin
-  if dsDefaulted in State then
+  {if dsDefaulted in State then
   begin
     Inflate(Rect);
     DrawRectState(Surface, Rect, State, RectRadius)
@@ -251,45 +303,77 @@ begin
     Inflate(Rect);
   end
   else
-    Inflate(Rect);
-  Rect.Left := Rect.Left + 4;
-  Rect.Width := Rect.Width - 8;
-  Surface.TextOut(FFont, '       ' + Obj.Name, Rect, drLeft);
+    Inflate(Rect);}
+  //Rect.Left := GetIndent(Obj);
+  IconRect := Rect;
+  IconRect.Left := GetIndent(Obj);
+  IconRect.Width := Rect.Height;
+  if Obj is IFolder then
+  begin
+    Folder := Obj as IFolder;
+    if dsSelected in State then
+      S := iconFolderSelect
+    else if Folder.Opened then
+      S := iconFolderOpened
+    else
+      S := iconFolderClosed;
+    FIcon.Color := colorFolder;
+    Surface.TextOut(FIcon, S, IconRect, drLeft);
+  end
+  else if Obj is IContent then
+  begin
+    Content := Obj as IContent;
+    if dsSelected in State then
+      S := iconContentSelect
+    else
+      S := iconContent;
+    FIcon.Color := colorContent;
+    Surface.TextOut(FIcon, S, IconRect, drLeft);
+  end
+  else
+  begin
+    FFont.Style := FFont.Style + [fsItalic];
+    IconRect.Right := IconRect.Left;
+    TextRect := IconRect;
+    TextRect.Left := IconRect.Right - 4;
+    TextRect.Width := Round(Surface.TextSize(FFont, Obj.Name).X + 16);
+    Inflate(TextRect);
+    DrawRectState(Surface, TextRect, State - [dsSelected], RectRadius);
+    Surface.TextOut(FFont, Obj.Name, TextRect, drCenter);
+    FFont.Style := FFont.Style - [fsItalic];
+    Exit;
+  end;
+  TextRect := IconRect;
+  TextRect.Left := IconRect.Right - 4;
+  TextRect.Right := Rect.Right;
+  Inflate(TextRect);
+  DrawRectState(Surface, TextRect, State, RectRadius);
+  TextRect.Inflate(-4, 0);
+  Surface.TextOut(FFont, Obj.Name, TextRect, drLeft);
 end;
 
 procedure TS3Renderer.DrawObjectButton(Surface: ISurface; Obj: IStorageObject;
   ItemIndex, Button: Integer; Rect: TRectI; State: TDrawState);
 var
+  Folder: IFolder;
   S: string;
 begin
-  FSmallIcon.Color := clWindowText;
-  if Obj.Checked then
-    if dsPressed in State then
-      S := iconCheckedPressed
+  if Obj is IFolder then
+  begin
+    Folder := Obj as IFolder;
+    if Folder.Opened then
+      S := iconFolderDown
     else
-      S := iconChecked
-  else if dsPressed in State then
-    S := iconUncheckedPressed
-  else
-    S := iconUnchecked;
-  Surface.TextOut(FSmallIcon, S, Rect, drCenter);
+      S := iconFolderRight;
+    FIcon.Color := clWindowText;
+    Surface.TextOut(FIcon, S, Rect, drRight);
+  end;
 end;
 
 procedure TS3Renderer.DrawTask(Surface: ISurface; Task: IAsyncTask; Rect: TRectI;
   ColWidths: IntArray; State: TDrawState);
 var
   Data: TTaskData;
-
-  function Column(Index: Integer): TRectI;
-  var
-    I: Integer;
-  begin
-    Result := Rect;
-    for I := 0 to Index  - 1 do
-      Result.Left := Result.Left + ColWidths[I];
-    Result.Width := ColWidths[Index];
-    Inflate(Result);
-  end;
 
   procedure DrawText(Rect: TRectI);
   begin
@@ -299,14 +383,14 @@ var
     FFont.Style := FFont.Style - [fsBold];
     Rect.Left := Rect.Left + 4;
     Rect.Width := ColWidths[1] - 8;
-    Surface.TextOut(FFont, Data.Message, Column(1), drLeft);
-    Surface.TextOut(FFont, TimeToStr(Task.StartTime), Column(2), drLeft);
-    Surface.TextOut(FFont, Format('%.0f ms', [Task.Duration * 1000]), Column(3), drLeft);
+    Surface.TextOut(FFont, Data.Message, GetColumn(Rect, ColWidths, 1), drLeft);
+    Surface.TextOut(FFont, TimeToStr(Task.StartTime), GetColumn(Rect, ColWidths,  2), drLeft);
+    Surface.TextOut(FFont, Format('%.0f ms', [Task.Duration * 1000]), GetColumn(Rect, ColWidths, 3), drLeft);
   end;
 
   procedure DrawIcon;
   var
-    Rect: TRectI;
+    R: TRectI;
     S: string;
   begin
     case Task.Status of
@@ -331,9 +415,9 @@ var
           S := iconCanceled;
         end;
     end;
-    Rect := Column(0);
-    Rect.Offset(-2, 0);
-    Surface.TextOut(FSmallIcon, S, Rect, drCenter);
+    R := GetColumn(Rect, ColWidths, 0);
+    R.Offset(-2, 0);
+    Surface.TextOut(FSmallIcon, S, R, drCenter);
   end;
 
 begin
