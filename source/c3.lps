@@ -8,8 +8,8 @@
         <Filename Value="c3.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="C3"/>
-        <CursorPos Y="14"/>
-        <UsageCount Value="36"/>
+        <CursorPos Y="4"/>
+        <UsageCount Value="49"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -20,11 +20,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ExploreFrm"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="180"/>
-        <CursorPos X="30" Y="201"/>
-        <UsageCount Value="36"/>
+        <TopLine Value="193"/>
+        <CursorPos Y="273"/>
+        <UsageCount Value="49"/>
         <Bookmarks Count="1">
-          <Item0 X="24" Y="331" ID="1"/>
+          <Item0 X="14" Y="275" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -34,39 +34,39 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="S3Graph"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="4"/>
-        <CursorPos X="23" Y="290"/>
-        <UsageCount Value="36"/>
+        <CursorPos Y="4"/>
+        <UsageCount Value="49"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="s3objects.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="S3Objects"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="11"/>
-        <CursorPos X="7" Y="356"/>
-        <UsageCount Value="36"/>
+        <TopLine Value="763"/>
+        <CursorPos X="100" Y="898"/>
+        <UsageCount Value="49"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="c3.inc"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="36"/>
+        <UsageCount Value="49"/>
       </Unit>
       <Unit>
         <Filename Value="main.pas"/>
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="17"/>
       </Unit>
       <Unit>
         <Filename Value="../../../fpc/rtl/unix/classes.pp"/>
         <UnitName Value="Classes"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.system.pas"/>
@@ -74,26 +74,23 @@
         <EditorIndex Value="3"/>
         <TopLine Value="156"/>
         <CursorPos X="11" Y="200"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.graphics.types.pas"/>
         <UnitName Value="Codebot.Graphics.Types"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="30"/>
-        <CursorPos X="30" Y="124"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../../../Libraries/Codebot.Cross/source/codebot_controls/codebot.controls.scrolling.pas"/>
         <UnitName Value="Codebot.Controls.Scrolling"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1418"/>
-        <CursorPos Y="1232"/>
-        <UsageCount Value="17"/>
+        <TopLine Value="1198"/>
+        <CursorPos X="8" Y="1230"/>
+        <UsageCount Value="18"/>
       </Unit>
       <Unit>
         <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
@@ -101,128 +98,135 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="680"/>
         <CursorPos Y="688"/>
-        <UsageCount Value="17"/>
+        <UsageCount Value="16"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/lcltype.pp"/>
+        <UnitName Value="LCLType"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="13" Y="31"/>
+        <UsageCount Value="9"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="s3objects.pas"/>
-        <Caret Line="310" TopLine="289"/>
+        <Caret Line="19" Column="34"/>
       </Position>
       <Position>
         <Filename Value="s3objects.pas"/>
-        <Caret Line="197" Column="10" TopLine="185"/>
+        <Caret Line="67" Column="20" TopLine="35"/>
       </Position>
       <Position>
         <Filename Value="s3objects.pas"/>
-        <Caret Line="328" Column="12" TopLine="308"/>
+        <Caret Line="224" Column="20" TopLine="192"/>
       </Position>
       <Position>
         <Filename Value="s3objects.pas"/>
-        <Caret Line="344" Column="22" TopLine="308"/>
+        <Caret Line="252" Column="20" TopLine="220"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="345" TopLine="316"/>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="392" Column="8" TopLine="360"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="308" TopLine="288"/>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="415" Column="24" TopLine="383"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="342" Column="56" TopLine="317"/>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="480" Column="8" TopLine="448"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="516" Column="45" TopLine="488"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="117" Column="5" TopLine="81"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="118" Column="27" TopLine="86"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="531" Column="60" TopLine="517"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="118" Column="26" TopLine="98"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="117" Column="5" TopLine="98"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="118" Column="26" TopLine="98"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="817" TopLine="793"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="159" Column="15" TopLine="137"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="829" Column="23" TopLine="814"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="539" Column="37" TopLine="505"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="517" Column="45" TopLine="508"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="762" TopLine="739"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="521" Column="9" TopLine="505"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="790" Column="22" TopLine="769"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="755" Column="10" TopLine="740"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="869" Column="73" TopLine="841"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="514" Column="22" TopLine="496"/>
+      </Position>
+      <Position>
+        <Filename Value="s3objects.pas"/>
+        <Caret Line="841" Column="85" TopLine="813"/>
       </Position>
       <Position>
         <Filename Value="explorefrm.pas"/>
-        <Caret Line="295" TopLine="281"/>
+        <Caret Line="129" Column="63" TopLine="107"/>
       </Position>
       <Position>
         <Filename Value="explorefrm.pas"/>
-        <Caret Line="80" Column="18" TopLine="41"/>
+        <Caret Line="276" Column="14" TopLine="256"/>
       </Position>
       <Position>
         <Filename Value="explorefrm.pas"/>
-        <Caret Line="303" Column="24" TopLine="273"/>
-      </Position>
-      <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="89" Column="18" TopLine="57"/>
-      </Position>
-      <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="300" TopLine="290"/>
-      </Position>
-      <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="294" Column="37" TopLine="274"/>
-      </Position>
-      <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="89" Column="15" TopLine="69"/>
-      </Position>
-      <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="297" Column="6" TopLine="277"/>
-      </Position>
-      <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="314" Column="14" TopLine="277"/>
-      </Position>
-      <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="339" Column="26" TopLine="319"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="334" Column="48" TopLine="316"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="89" Column="7" TopLine="62"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="257" Column="7" TopLine="225"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="518" Column="11" TopLine="506"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="441" Column="44" TopLine="416"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="176" TopLine="156"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="845" TopLine="806"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="443" Column="23" TopLine="420"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="62" Column="17" TopLine="62"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="66" Column="22" TopLine="58"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="199" Column="22" TopLine="167"/>
-      </Position>
-      <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="356" Column="7" TopLine="317"/>
+        <Caret Line="92" Column="15" TopLine="77"/>
       </Position>
     </JumpHistory>
     <RunParams>

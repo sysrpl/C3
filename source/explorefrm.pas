@@ -16,7 +16,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, StdCtrls, ExtCtrls, PairSplitter,
-  S3Objects, S3Graph,
+  LCLType, S3Objects, S3Graph,
   Codebot.System,
   Codebot.Collections,
   Codebot.Text.Xml,
@@ -58,8 +58,11 @@ type
     procedure ObjectsBoxButtonClick(Sender: TObject; ItemIndex, Button: Integer);
     procedure ObjectsBoxButtonDraw(Sender: TObject; Surface: ISurface;
       ItemIndex, Button: Integer; Rect: TRectI; State: TDrawState);
+    procedure ObjectsBoxDblClick(Sender: TObject);
     procedure ObjectsBoxDrawItem(Sender: TObject; Surface: ISurface;
       Index: Integer; Rect: TRectI; State: TDrawState);
+    procedure ObjectsBoxKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure TasksBoxDrawItem(Sender: TObject; Surface: ISurface;
       Index: Integer; Rect: TRectI; State: TDrawState);
     procedure BoxEnter(Sender: TObject);
@@ -242,6 +245,7 @@ end;
 procedure TExploreForm.HandleTask(Sender: TObject; Data: TTaskData);
 var
   Bucket: IBucket;
+  Folder: IFolder;
 begin
   case Data.Kind of
     taskListBuckets,
@@ -262,6 +266,13 @@ begin
           ObjectsBox.ItemIndex := 0;
           ObjectsBox.Invalidate;
         end;
+      end;
+    taskListFolderObjects:
+      begin
+        Folder := Data.Target as IFolder;
+        Bucket := Folder.Bucket;
+        if Bucket = FBucket then
+          FolderExpand(Folder, Folder.Opened);
       end;
   end;
   TasksBox.Count := FManager.Tasks.Count;
@@ -345,7 +356,7 @@ procedure TExploreForm.ObjectsBoxButtonClick(Sender: TObject; ItemIndex,
 var
   Obj: IStorageObject;
   Folder: IFolder;
-  I: Integer;
+  // I: Integer;
 begin
   Obj := ObjectsGet(ItemIndex);
   if (Obj <> nil) and (Obj is IFolder) then
@@ -373,6 +384,19 @@ begin
   end;
 end;
 
+procedure TExploreForm.ObjectsBoxDblClick(Sender: TObject);
+var
+  Obj: IStorageObject;
+  Folder: IFolder;
+begin
+  Obj := ObjectsGet(ObjectsBox.ItemIndex);
+  if Obj is IFolder then
+  begin
+    Folder := Obj as IFolder;
+    FolderExpand(Folder, not Folder.Opened);
+  end;
+end;
+
 procedure TExploreForm.ObjectsBoxDrawItem(Sender: TObject; Surface: ISurface;
   Index: Integer; Rect: TRectI; State: TDrawState);
 var
@@ -383,6 +407,24 @@ begin
     FRenderer.DrawObject(Surface, Obj, Rect, ObjectsHeader.GetColWidths, State)
   else
     FRenderer.DrawObjectEmpty(Surface, Rect, Index);
+end;
+
+procedure TExploreForm.ObjectsBoxKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  Obj: IStorageObject;
+  Folder: IFolder;
+begin
+  Obj := ObjectsGet(ObjectsBox.ItemIndex);
+  if Obj is IFolder then
+  begin
+    Folder := Obj as IFolder;
+    case Key of
+      VK_LEFT: FolderExpand(Folder, False);
+      VK_RIGHT: FolderExpand(Folder, True);
+      VK_SPACE: FolderExpand(Folder, not Folder.Opened);
+    end;
+  end;
 end;
 
 procedure TExploreForm.TasksBoxDrawItem(Sender: TObject; Surface: ISurface;

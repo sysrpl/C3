@@ -114,7 +114,8 @@ type
   TTaskKind = (
     taskListBuckets,
     taskGetBucketLocation,
-    taskListBucketObjects
+    taskListBucketObjects,
+    taskListFolderObjects
   );
 
   TTaskData = class
@@ -155,6 +156,7 @@ type
     procedure ListBuckets(Response: IDocument);
     procedure GetBucketLocation(Data: TTaskData; Response: IDocument);
     procedure ListBucketObjects(Data: TTaskData; Response: IDocument);
+    procedure ListFolderObjects(Data: TTaskData; Response: IDocument);
   protected
     procedure TaskStart(const Request: TS3Request; Data: TObject);
     procedure TaskComplete(Task: IAsyncTask; Result: IDocument);
@@ -502,9 +504,35 @@ begin
   Result := FList.GetEnumerator;
 end;
 
-procedure TFolder.Query;
+function GetPrefix(Folder: IFolder): string;
 begin
+  Result := Folder.Name + '/';
+  if Folder.Parent is IFolder then
+    Result := GetPrefix(Folder.Parent as IFolder) + Result;
+end;
 
+procedure TFolder.Query;
+var
+  Request: TS3Request;
+  Folder: IFolder;
+  Bucket: IBucket;
+  Region: string;
+  Prefix: string;
+  Data: TTaskData;
+begin
+  if FQueried then
+    Exit;
+  Folder := Self as IFolder;
+  Bucket := Folder.Bucket;
+  Region := Bucket.Region;
+  if Region = '' then
+    Exit;
+  FQueried := True;
+  Prefix := GetPrefix(Folder);
+  Request := Owner.S3.ListObjects(Bucket.Name, '', Prefix, '/');
+  Data := TTaskData.Create(Self as IFolder, taskListFolderObjects, 'Listing objects in ' +
+    Owner.S3.Config.EndPoint(Region) + '/' + GetBucket.Name + '/' + Prefix);
+  Owner.TaskStart(Request, Data);
 end;
 
 { TFolder.IFolder }
@@ -730,8 +758,6 @@ begin
   if Result.EndsWith('/') then
     SetLength(Result, Length(Result) - 1);
   Result := Result.LastOf('/');
-  if Name <> Result then
-    WriteLn('Name cleaned: ', Name);
 end;
 
 function ParseDateTime(const Value: string): TDateTime;
@@ -773,10 +799,10 @@ begin
   for N in Response.Root.SelectList('//Contents') do
   begin
     F := N.Filer;
-    S := F.ReadStr('Key');
+    S := CleanName(F.ReadStr('Key'));
     if S = '' then
       Continue;
-    Content := TContent.Create(Self, CleanName(S));
+    Content := TContent.Create(Self, S);
     (Content as IChildObject).SetParent(Bucket);
     ContentObj := Content as TContent;
     ContentObj.FSize := F.ReadInt64('Size');
@@ -789,6 +815,49 @@ begin
   else
     S := 's';
   Data.Message := Data.Message + Format(' (found %d object%s)', [Bucket.Count, S]);
+end;
+
+procedure TS3Manager.ListFolderObjects(Data: TTaskData; Response: IDocument);
+var
+  Folder: IFolder;
+  FolderObj: TFolder;
+  NewFolder: IFolder;
+  Content: IContent;
+  ContentObj: TContent;
+  N: INode;
+  F: IFiler;
+  S: string;
+begin
+  Folder := Data.Target as IFolder;
+  FolderObj := Folder as TFolder;
+  for N in Response.Root.SelectList('//CommonPrefixes/Prefix') do
+  begin
+    S := CleanName(N.Text);
+    if S = '' then
+      Continue;
+    NewFolder := TFolder.Create(Self, S);
+    (NewFolder as IChildObject).SetParent(Folder);
+    FolderObj.FList.Add(NewFolder);
+  end;
+  for N in Response.Root.SelectList('//Contents') do
+  begin
+    F := N.Filer;
+    S := CleanName(F.ReadStr('Key'));
+    if S = '' then
+      Continue;
+    Content := TContent.Create(Self, S);
+    (Content as IChildObject).SetParent(Folder);
+    ContentObj := Content as TContent;
+    ContentObj.FSize := F.ReadInt64('Size');
+    ContentObj.FModified := ParseDateTime(F.ReadStr('LastModified'));
+    ContentObj.FStorageClass := F.ReadStr('StorageClass');
+    FolderObj.FList.Add(Content);
+  end;
+  if Folder.Count = 1 then
+    S := ''
+  else
+    S := 's';
+  Data.Message := Data.Message + Format(' (found %d object%s)', [Folder.Count, S]);
 end;
 
 procedure TS3Manager.TaskComplete(Task: IAsyncTask; Result: IDocument);
@@ -808,6 +877,7 @@ begin
       taskListBuckets: ListBuckets(Result);
       taskGetBucketLocation: GetBucketLocation(Data, Result);
       taskListBucketObjects: ListBucketObjects(Data, Result);
+      taskListFolderObjects: ListFolderObjects(Data, Result);
     end;
   DoTask(Data);
   Dec(FBusyCount);
