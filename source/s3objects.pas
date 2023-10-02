@@ -425,8 +425,7 @@ begin
     Exit;
   FQueried := True;
   Request := Owner.S3.ListObjects(FName, '', '', '/');
-  Data := TTaskData.Create(Self as IBucket, taskListBucketObjects, 'Listing objects in ' +
-    Owner.S3.Config.EndPoint(FRegion) + '/' + FName);
+  Data := TTaskData.Create(Self as IBucket, taskListBucketObjects, 'List ' + FName);
   Owner.TaskStart(Request, Data);
 end;
 
@@ -530,8 +529,9 @@ begin
   FQueried := True;
   Prefix := GetPrefix(Folder);
   Request := Owner.S3.ListObjects(Bucket.Name, '', Prefix, '/');
-  Data := TTaskData.Create(Self as IFolder, taskListFolderObjects, 'Listing objects in ' +
-    Owner.S3.Config.EndPoint(Region) + '/' + GetBucket.Name + '/' + Prefix);
+  Prefix.Length := Prefix.Length - 1;
+  Data := TTaskData.Create(Self as IFolder, taskListFolderObjects, 'List ' +
+    GetBucket.Name + '/' + Prefix);
   Owner.TaskStart(Request, Data);
 end;
 
@@ -677,7 +677,7 @@ var
 begin
   Buckets.Clear;
   Request := S3.ListBuckets;
-  Data := TTaskData.Create(nil, taskListBuckets, 'Listing buckets on ' + S3.Config.EndPoint);
+  Data := TTaskData.Create(nil, taskListBuckets, 'List buckets on ' + S3.Config.EndPoint);
   TaskStart(Request, Data);
 end;
 

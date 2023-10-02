@@ -63,6 +63,7 @@ type
       Index: Integer; Rect: TRectI; State: TDrawState);
     procedure ObjectsBoxKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure ObjectsHeaderColumnResize(Sender: TObject; Column: THeaderColumn);
     procedure TasksBoxDrawItem(Sender: TObject; Surface: ISurface;
       Index: Integer; Rect: TRectI; State: TDrawState);
     procedure BoxEnter(Sender: TObject);
@@ -109,7 +110,7 @@ const
 procedure TExploreForm.FormCreate(Sender: TObject);
 const
   BucketHeight = 48;
-  ObjectHeight = 28;
+  ObjectHeight = 24;
   HistoryHeight = 24;
 begin
   ClientWidth := VertSplit.Left * 2 + VertSplit.Width;
@@ -129,7 +130,7 @@ begin
   TasksHeader.Tag := PtrInt(TasksBox);
   FObjects := TInterfaces<IStorageObject>.Create;
   FObjects.Capacity := DefCapcity;
-  FManager := TS3Manager.Create(S3Configs.Amazon);
+  FManager := TS3Manager.Create(S3Configs.Wasabi);
   FManager.OnBusyChange.Add(HandleBusyChange);
   FManager.OnTask.Add(HandleTask);
   FRenderer := TS3Renderer.Create(Font);
@@ -420,11 +421,23 @@ begin
   begin
     Folder := Obj as IFolder;
     case Key of
-      VK_LEFT: FolderExpand(Folder, False);
+      VK_LEFT:
+        if Folder.Opened then
+          FolderExpand(Folder, False)
+        else if Obj.Parent is IFolder then
+          ObjectsBox.ItemIndex := ObjectsIndex(Obj.Parent);
       VK_RIGHT: FolderExpand(Folder, True);
       VK_SPACE: FolderExpand(Folder, not Folder.Opened);
     end;
-  end;
+  end
+  else if (Obj is IContent) and (Key = VK_LEFT) then
+    ObjectsBox.ItemIndex := ObjectsIndex(Obj.Parent);
+end;
+
+procedure TExploreForm.ObjectsHeaderColumnResize(Sender: TObject;
+  Column: THeaderColumn);
+begin
+  ObjectsBox.Invalidate;
 end;
 
 procedure TExploreForm.TasksBoxDrawItem(Sender: TObject; Surface: ISurface;

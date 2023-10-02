@@ -48,7 +48,6 @@ const
   iconUncheckedPressed = '󰄮';
   iconCheckedPressed = '󰄲';
 
-
   colorBucket: TColor = $E5AA1E;
   colorBusy: TColor = $28CAFF;
   colorSuccess: TColor = $4AC38B;
@@ -205,9 +204,29 @@ begin
   for I := 0 to Index  - 1 do
     Result.Left := Result.Left + ColWidths[I];
   Result.Width := ColWidths[Index];
+  {if Result.Right > Rect.Right then
+    Result.Right := Rect.Right;}
   Inflate(Result);
 end;
 
+function StrToBytes(Size: Int64): string;
+const
+  Kilobyte = 1024;
+  Megabyte = Kilobyte * Kilobyte;
+  Gigabyte = Megabyte * Kilobyte;
+  Terrabyte = Gigabyte * Kilobyte;
+begin
+  if Size < Kilobyte * 8 then
+    Result := IntToStr(Size) + ' bytes'
+  else if Size < Megabyte then
+    Result := Format('%.1f kB', [Size / Kilobyte])
+  else if Size < Gigabyte then
+    Result := Format('%.1f MB', [Size / Megabyte])
+  else if Size < Terrabyte then
+    Result := Format('%.1f GB', [Size / Gigabyte])
+  else
+    Result := Format('%.1f TB', [Size / Terrabyte])
+end;
 
 procedure TS3Renderer.DrawBucket(Surface: ISurface; Bucket: IBucket; Rect: TRectI;
   State: TDrawState);
@@ -319,6 +338,13 @@ begin
       S := iconFolderClosed;
     FIcon.Color := colorFolder;
     Surface.TextOut(FIcon, S, IconRect, drLeft);
+    TextRect := IconRect;
+    TextRect.Left := IconRect.Right - 4;
+    TextRect.Right := Rect.Right;
+    Inflate(TextRect);
+    DrawRectState(Surface, TextRect, State, RectRadius);
+    TextRect.Inflate(-4, 0);
+    Surface.TextOut(FFont, Obj.Name, TextRect, drLeft);
   end
   else if Obj is IContent then
   begin
@@ -329,6 +355,22 @@ begin
       S := iconContent;
     FIcon.Color := colorContent;
     Surface.TextOut(FIcon, S, IconRect, drLeft);
+    TextRect := IconRect;
+    TextRect.Left := IconRect.Right - 4;
+    TextRect.Right := Rect.Right;
+    Inflate(TextRect);
+    DrawRectState(Surface, TextRect, State, RectRadius);
+    TextRect.Right := GetColumn(Rect, ColWidths, 1).Right;
+    TextRect.Inflate(-4, 0);
+    Surface.TextOut(FFont, Obj.Name, TextRect, drLeft);
+    TextRect := GetColumn(Rect, ColWidths, 2);
+    TextRect.Inflate(-4, 0);
+    S := StrToBytes(Content.Size);
+    Surface.TextOut(FFont, S, TextRect, drRight);
+    TextRect := GetColumn(Rect, ColWidths, 3);
+    TextRect.Inflate(-4, 0);
+    S := FormatDateTime('ddd dd mmm yyyy h:nn:ss AM/PM', Content.Modified);
+    Surface.TextOut(FFont, S, TextRect, drLeft);
   end
   else
   begin
@@ -341,15 +383,7 @@ begin
     DrawRectState(Surface, TextRect, State - [dsSelected], RectRadius);
     Surface.TextOut(FFont, Obj.Name, TextRect, drCenter);
     FFont.Style := FFont.Style - [fsItalic];
-    Exit;
   end;
-  TextRect := IconRect;
-  TextRect.Left := IconRect.Right - 4;
-  TextRect.Right := Rect.Right;
-  Inflate(TextRect);
-  DrawRectState(Surface, TextRect, State, RectRadius);
-  TextRect.Inflate(-4, 0);
-  Surface.TextOut(FFont, Obj.Name, TextRect, drLeft);
 end;
 
 procedure TS3Renderer.DrawObjectButton(Surface: ISurface; Obj: IStorageObject;

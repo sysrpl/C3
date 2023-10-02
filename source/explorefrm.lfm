@@ -148,23 +148,22 @@ object ExploreForm: TExploreForm
                 CanSelect = False
                 Caption = 'Name'
                 Tag = 1
-                Width = 350
+                Width = 300
               end            
               item
                 CanSelect = False
                 Caption = 'Size'
                 Tag = 2
-                Width = 75
               end            
               item
                 CanSelect = False
                 Caption = 'Date'
                 Tag = 3
-                Width = 125
+                Width = 400
               end>
             Align = alTop
             ThemeName = 'Redmond'
-            OnColumnResize = TasksHeaderColumnResize
+            OnColumnResize = ObjectsHeaderColumnResize
             OnMouseDown = BoxFocusMouseAction
           end
         end
