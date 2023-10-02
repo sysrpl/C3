@@ -13,6 +13,7 @@ object ExploreForm: TExploreForm
   OnResize = FormResize
   OnShow = FormShow
   Position = poScreenCenter
+  LCLVersion = '2.1.0.0'
   object VertSplit: TPairSplitter
     Cursor = crDefault
     Left = 8

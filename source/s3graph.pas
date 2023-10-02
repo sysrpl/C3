@@ -1,6 +1,6 @@
 (********************************************************)
 (*                                                      *)
-(*  Codebot Simple Storage                              *)
+(*  Codebot Cloud Client                                *)
 (*  http://www.getlazarus.org/apps/s3                   *)
 (*  Modified October 2023                               *)
 (*                                                      *)
