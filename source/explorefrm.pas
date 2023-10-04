@@ -15,13 +15,15 @@ unit ExploreFrm;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, StdCtrls, ExtCtrls, PairSplitter,
-  LCLType, S3Objects, S3Graph,
+  Classes, SysUtils, Forms, Dialogs , Controls, Graphics, StdCtrls, ExtCtrls,
+  PairSplitter, LCLType, LCLIntf, S3Actions, S3Graph, S3Objects, DialogTools,
   Codebot.System,
   Codebot.Collections,
   Codebot.Text.Xml,
   Codebot.Networking.Storage,
   Codebot.Controls.Scrolling,
+  Codebot.Controls.Containers,
+  Codebot.Controls.Extras,
   Codebot.Graphics,
   Codebot.Graphics.Types;
 
@@ -31,14 +33,15 @@ type
   TExploreForm = class(TForm)
     BucketsBox: TDrawList;
     BucketsLabel: TLabel;
-    Label1: TLabel;
-    TasksHeader: THeaderBar;
+    ObjectsBox: TDrawList;
+    ObjectsHeader: THeaderBar;
     ObjectsLabel: TLabel;
+    ObjectsPanel: TPanel;
+    ActionsBox: TPanel;
+    TasksHeader: THeaderBar;
     HorzSplit: TPairSplitter;
     LeftSide: TPairSplitterSide;
-    ObjectsBox: TDrawList;
     BucketTimer: TTimer;
-    ObjectsHeader: THeaderBar;
     TasksLabel: TLabel;
     RightSide: TPairSplitterSide;
     TasksBox: TDrawList;
@@ -52,6 +55,7 @@ type
       Index: Integer; Rect: TRectI; State: TDrawState);
     procedure BoxFocusMouseAction(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure FormDblClick(Sender: TObject);
     procedure LabelClick(Sender: TObject);
     procedure ObjectsBoxButtonCalc(Sender: TObject; ItemIndex: Integer;
       Rect: TRectI; var Buttons: TButtonRects);
@@ -63,7 +67,10 @@ type
       Index: Integer; Rect: TRectI; State: TDrawState);
     procedure ObjectsBoxKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure SelectItem(Sender: TObject);
     procedure ObjectsHeaderColumnResize(Sender: TObject; Column: THeaderColumn);
+    procedure RenderBox1Click(Sender: TObject);
+    procedure TasksBoxDblClick(Sender: TObject);
     procedure TasksBoxDrawItem(Sender: TObject; Surface: ISurface;
       Index: Integer; Rect: TRectI; State: TDrawState);
     procedure BoxEnter(Sender: TObject);
@@ -82,6 +89,7 @@ type
     procedure VertSplitChangeBounds(Sender: TObject);
   private
     FManager: TS3Manager;
+    FActionManager: TS3ActionManager;
     FBucket: IBucket;
     FObjects: IList<IStorageObject>;
     FRenderer: TS3Renderer;
@@ -130,7 +138,7 @@ begin
   TasksHeader.Tag := PtrInt(TasksBox);
   FObjects := TInterfaces<IStorageObject>.Create;
   FObjects.Capacity := DefCapcity;
-  FManager := TS3Manager.Create(S3Configs.Wasabi);
+  FManager := TS3Manager.Create(S3Configs.Amazon);
   FManager.OnBusyChange.Add(HandleBusyChange);
   FManager.OnTask.Add(HandleTask);
   FRenderer := TS3Renderer.Create(Font);
@@ -140,6 +148,7 @@ procedure TExploreForm.FormDestroy(Sender: TObject);
 begin
   FRenderer.Free;
   FManager.Free;
+  FActionManager.Free;
 end;
 
 procedure TExploreForm.FormResize(Sender: TObject);
@@ -153,6 +162,7 @@ begin
   ObjectsBox.MultiSelect := True;
   FManager.Refresh;
   FTaskHeight := VertSplit.Height - VertSplit.Position;
+  FActionManager := TS3ActionManager.Create(FManager, ActionsBox);
 end;
 
 procedure TExploreForm.HorzSplitChangeBounds(Sender: TObject);
@@ -298,6 +308,14 @@ begin
   TWinControl((Sender as TComponent).Tag).SetFocus;
 end;
 
+procedure TExploreForm.FormDblClick(Sender: TObject);
+begin
+  //Caption := 'Dimmed';
+  //DimWindow(Self);
+  //ShowMessage('Hello world');
+  //UndimWindow;
+end;
+
 procedure TExploreForm.LabelClick(Sender: TObject);
 begin
   TWinControl((Sender as TComponent).Tag).SetFocus;
@@ -389,12 +407,18 @@ procedure TExploreForm.ObjectsBoxDblClick(Sender: TObject);
 var
   Obj: IStorageObject;
   Folder: IFolder;
+  Content: IContent;
 begin
   Obj := ObjectsGet(ObjectsBox.ItemIndex);
   if Obj is IFolder then
   begin
     Folder := Obj as IFolder;
     FolderExpand(Folder, not Folder.Opened);
+  end
+  else if Obj is IContent then
+  begin
+    Content := Obj as IContent;
+    OpenUrl(Content.Presign);
   end;
 end;
 
@@ -434,10 +458,65 @@ begin
     ObjectsBox.ItemIndex := ObjectsIndex(Obj.Parent);
 end;
 
+procedure TExploreForm.SelectItem(Sender: TObject);
+var
+  I: Integer;
+begin
+  if BucketsBox.Focused then
+  begin
+    I := BucketsBox.ItemIndex;
+    if I > -1 then
+      FActionManager.Select(FManager.Buckets[I])
+    else
+      FActionManager.Select(nil);
+  end
+  else if ObjectsBox.Focused then
+  begin
+    I := ObjectsBox.ItemIndex;
+    if I > -1 then
+      FActionManager.Select(ObjectsGet(I))
+    else if FBucket <> nil then
+      FActionManager.Select(FBucket.Null)
+    else
+      FActionManager.Select(nil);
+  end
+  else if TasksBox.Focused then
+  begin
+    I := TasksBox.ItemIndex;
+    if I > -1 then
+      FActionManager.Select(FManager.Tasks[FManager.Tasks.Count - I - 1])
+    else
+      FActionManager.Select(nil);
+  end;
+end;
+
 procedure TExploreForm.ObjectsHeaderColumnResize(Sender: TObject;
   Column: THeaderColumn);
 begin
   ObjectsBox.Invalidate;
+end;
+
+procedure TExploreForm.RenderBox1Click(Sender: TObject);
+begin
+
+end;
+
+procedure TExploreForm.TasksBoxDblClick(Sender: TObject);
+var
+  Task: IAsyncTask;
+  data: TTaskData;
+  I: Integer;
+begin
+  I := TasksBox.ItemIndex;
+  if I < 0 then
+    Exit;
+  Task := FManager.Tasks[FManager.Tasks.Count - I - 1];
+  if Task.Status = asyncFail then
+  begin
+    Data := Task.Data as TTaskData;
+    Data.Error.Beautify;
+    ShowMessage('Task Error Details:'#10#10 + Data.Error.Xml)
+  end;
 end;
 
 procedure TExploreForm.TasksBoxDrawItem(Sender: TObject; Surface: ISurface;
@@ -469,6 +548,7 @@ begin
   L := TLabel((Sender as TComponent).Tag);
   L.Color := InactiveColor;
   L.Font.Color := clCaptionText;
+  SelectItem(Sender);
 end;
 
 procedure TExploreForm.BoxExit(Sender: TObject);
@@ -506,6 +586,7 @@ begin
       ObjectsBox.Count := I
     else
       ObjectsBox.Count := 1;
+    SelectItem(BucketsBox);
   end
   else
   begin

@@ -14,13 +14,14 @@ program C3;
 
 uses
   Codebot.System,
-  Interfaces,
-  Forms, ExploreFrm, S3Graph, S3Objects;
+  Interfaces, Forms,
+  ExploreFrm, DialogTools, S3Actions, S3Graph, S3Objects;
 
 {$R *.res}
 
 begin
   RequireDerivedFormResource := True;
+  Application.Title := 'C3';
   Application.Scaled := True;
   Application.Initialize;
   Application.CreateForm(TExploreForm, ExploreForm);

@@ -9,6 +9,7 @@ object ExploreForm: TExploreForm
   ClientWidth = 872
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnDblClick = FormDblClick
   OnDestroy = FormDestroy
   OnResize = FormResize
   OnShow = FormShow
@@ -91,80 +92,101 @@ object ExploreForm: TExploreForm
           Width = 577
           ClientWidth = 577
           ClientHeight = 350
-          object ObjectsBox: TDrawList
+          object ObjectsPanel: TPanel
             Left = 0
-            Height = 302
-            Top = 48
-            Width = 577
-            Align = alClient
-            BorderStyle = bsSingle
-            DesktopFont = True
-            HotTrack = False
-            ItemHeight = 15
-            MultiSelect = False
-            ParentColor = False
-            TabOrder = 0
-            TabStop = True
-            OnEnter = BoxEnter
-            OnExit = BoxExit
-            OnDblClick = ObjectsBoxDblClick
-            OnButtonCalc = ObjectsBoxButtonCalc
-            OnButtonDraw = ObjectsBoxButtonDraw
-            OnButtonClick = ObjectsBoxButtonClick
-            OnDrawItem = ObjectsBoxDrawItem
-            OnKeyDown = ObjectsBoxKeyDown
-          end
-          object ObjectsLabel: TLabel
-            Left = 0
-            Height = 24
+            Height = 350
             Top = 0
-            Width = 577
-            Align = alTop
-            AutoSize = False
-            Caption = '   No bucket selected'
-            Color = clInactiveCaption
-            Layout = tlCenter
-            ParentColor = False
-            Transparent = False
-            OnClick = LabelClick
-            OnMouseDown = BoxFocusMouseAction
-            OnMouseUp = BoxFocusMouseAction
+            Width = 402
+            Align = alClient
+            BevelOuter = bvNone
+            ClientHeight = 350
+            ClientWidth = 402
+            TabOrder = 0
+            object ObjectsHeader: THeaderBar
+              Left = 0
+              Height = 24
+              Top = 24
+              Width = 402
+              Columns = <              
+                item
+                  Alignment = taCenter
+                  CanSelect = False
+                  Caption = '󰄹'
+                  Fixed = True
+                  Tag = 0
+                  Width = 32
+                end              
+                item
+                  CanSelect = False
+                  Caption = 'Name'
+                  Tag = 1
+                  Width = 300
+                end              
+                item
+                  CanSelect = False
+                  Caption = 'Size'
+                  Tag = 2
+                end              
+                item
+                  CanSelect = False
+                  Caption = 'Date'
+                  Tag = 3
+                  Width = 400
+                end>
+              Align = alTop
+              ThemeName = 'Redmond'
+              OnColumnResize = ObjectsHeaderColumnResize
+              OnMouseDown = BoxFocusMouseAction
+            end
+            object ObjectsBox: TDrawList
+              Left = 0
+              Height = 302
+              Top = 48
+              Width = 402
+              Align = alClient
+              BorderStyle = bsSingle
+              DesktopFont = True
+              HotTrack = False
+              ItemHeight = 15
+              MultiSelect = False
+              ParentColor = False
+              TabOrder = 0
+              TabStop = True
+              OnEnter = BoxEnter
+              OnExit = BoxExit
+              OnDblClick = ObjectsBoxDblClick
+              OnButtonCalc = ObjectsBoxButtonCalc
+              OnButtonDraw = ObjectsBoxButtonDraw
+              OnButtonClick = ObjectsBoxButtonClick
+              OnDrawItem = ObjectsBoxDrawItem
+              OnKeyDown = ObjectsBoxKeyDown
+              OnSelectItem = SelectItem
+            end
+            object ObjectsLabel: TLabel
+              Left = 0
+              Height = 24
+              Top = 0
+              Width = 402
+              Align = alTop
+              AutoSize = False
+              Caption = '   No bucket selected'
+              Color = clInactiveCaption
+              Layout = tlCenter
+              ParentColor = False
+              Transparent = False
+              OnClick = LabelClick
+              OnMouseDown = BoxFocusMouseAction
+              OnMouseUp = BoxFocusMouseAction
+            end
           end
-          object ObjectsHeader: THeaderBar
-            Left = 0
-            Height = 24
-            Top = 24
-            Width = 577
-            Columns = <            
-              item
-                Alignment = taCenter
-                CanSelect = False
-                Caption = '󰄹'
-                Fixed = True
-                Tag = 0
-                Width = 32
-              end            
-              item
-                CanSelect = False
-                Caption = 'Name'
-                Tag = 1
-                Width = 300
-              end            
-              item
-                CanSelect = False
-                Caption = 'Size'
-                Tag = 2
-              end            
-              item
-                CanSelect = False
-                Caption = 'Date'
-                Tag = 3
-                Width = 400
-              end>
-            Align = alTop
-            ThemeName = 'Redmond'
-            OnColumnResize = ObjectsHeaderColumnResize
-            OnMouseDown = BoxFocusMouseAction
+          object ActionsBox: TPanel
+            Left = 402
+            Height = 350
+            Top = 0
+            Width = 175
+            Align = alRight
+            BevelOuter = bvNone
+            TabOrder = 1
           end
         end
       end
@@ -194,7 +216,9 @@ object ExploreForm: TExploreForm
         TabStop = True
         OnEnter = BoxEnter
         OnExit = BoxExit
+        OnDblClick = TasksBoxDblClick
         OnDrawItem = TasksBoxDrawItem
+        OnSelectItem = SelectItem
       end
       object TasksLabel: TLabel
         Left = 0
@@ -248,17 +272,6 @@ object ExploreForm: TExploreForm
         OnMouseDown = BoxFocusMouseAction
       end
     end
-  end
-  object Label1: TLabel
-    Left = 192
-    Height = 14
-    Top = 560
-    Width = 13
-    Caption = '󰄵'
-    Font.Height = -13
-    Font.Name = 'Material Design Icons'
-    ParentColor = False
-    ParentFont = False
   end
   object BusyTimer: TTimer
     Enabled = False

@@ -1,6 +1,7 @@
 .git.local
 .git.remote
 backup
+bin
 lib
 c3
 *.lnk

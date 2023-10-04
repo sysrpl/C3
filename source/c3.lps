@@ -8,9 +8,9 @@
         <Filename Value="c3.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="C3"/>
-        <CursorPos X="39" Y="21"/>
-        <UsageCount Value="61"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="25" Y="18"/>
+        <UsageCount Value="135"/>
       </Unit>
       <Unit>
         <Filename Value="explorefrm.pas"/>
@@ -19,11 +19,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ExploreFrm"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="110"/>
-        <CursorPos X="84" Y="124"/>
-        <UsageCount Value="61"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="443"/>
+        <CursorPos X="40" Y="478"/>
+        <UsageCount Value="135"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -31,205 +30,421 @@
         <Filename Value="s3graph.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="S3Graph"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="178"/>
-        <CursorPos X="4" Y="207"/>
-        <UsageCount Value="61"/>
-        <Bookmarks Count="1">
-          <Item0 X="36" Y="419" ID="1"/>
-        </Bookmarks>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="71"/>
+        <CursorPos Y="101"/>
+        <UsageCount Value="135"/>
       </Unit>
       <Unit>
         <Filename Value="s3objects.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="S3Objects"/>
-        <EditorIndex Value="5"/>
-        <UsageCount Value="61"/>
+        <TopLine Value="22"/>
+        <CursorPos X="28" Y="37"/>
+        <UsageCount Value="135"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="c3.inc"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="135"/>
+      </Unit>
+      <Unit>
+        <Filename Value="dialogtools.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DialogTools"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="74"/>
+        <CursorPos X="20" Y="83"/>
+        <UsageCount Value="79"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="s3actions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="S3Actions"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="92"/>
+        <CursorPos X="31" Y="73"/>
+        <UsageCount Value="33"/>
+        <Bookmarks Count="1">
+          <Item0 Y="118" ID="1"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="blackfrm.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="BlackForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="BlackFrm"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="46"/>
+        <CursorPos X="52" Y="54"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="main.pas"/>
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="16"/>
-      </Unit>
-      <Unit>
-        <Filename Value="../../../fpc/rtl/unix/classes.pp"/>
-        <UnitName Value="Classes"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="8"/>
       </Unit>
       <Unit>
         <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.system.pas"/>
         <UnitName Value="Codebot.System"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="156"/>
-        <CursorPos X="11" Y="200"/>
-        <UsageCount Value="30"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1064"/>
+        <CursorPos X="13" Y="1072"/>
+        <UsageCount Value="50"/>
       </Unit>
       <Unit>
         <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.graphics.types.pas"/>
         <UnitName Value="Codebot.Graphics.Types"/>
-        <EditorIndex Value="4"/>
-        <UsageCount Value="30"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1246"/>
+        <CursorPos Y="1268"/>
+        <UsageCount Value="50"/>
       </Unit>
       <Unit>
         <Filename Value="../../../Libraries/Codebot.Cross/source/codebot_controls/codebot.controls.scrolling.pas"/>
         <UnitName Value="Codebot.Controls.Scrolling"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1198"/>
-        <CursorPos X="8" Y="1230"/>
-        <UsageCount Value="17"/>
+        <TopLine Value="192"/>
+        <CursorPos X="18" Y="216"/>
+        <UsageCount Value="29"/>
       </Unit>
       <Unit>
         <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.collections.pas"/>
         <UnitName Value="Codebot.Collections"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="680"/>
-        <CursorPos Y="688"/>
-        <UsageCount Value="15"/>
+        <TopLine Value="579"/>
+        <CursorPos Y="596"/>
+        <UsageCount Value="14"/>
       </Unit>
       <Unit>
         <Filename Value="../../../lazarus/lcl/lcltype.pp"/>
         <UnitName Value="LCLType"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="31"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.networking.storage.pas"/>
         <UnitName Value="Codebot.Networking.Storage"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="979"/>
-        <CursorPos X="16" Y="1014"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="208"/>
+        <CursorPos X="14" Y="227"/>
+        <UsageCount Value="39"/>
+        <Bookmarks Count="2">
+          <Item0 X="53" Y="827" ID="1"/>
+          <Item1 X="10" Y="596" ID="2"/>
+        </Bookmarks>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.networking.pas"/>
+        <UnitName Value="Codebot.Networking"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="110"/>
+        <CursorPos Y="128"/>
+        <UsageCount Value="26"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.graphics.linux.surfacecairo.pas"/>
+        <UnitName Value="Codebot.Graphics.Linux.SurfaceCairo"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1713"/>
+        <CursorPos Y="1741"/>
+        <UsageCount Value="23"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="615"/>
+        <CursorPos Y="633"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/controls.pp"/>
+        <UnitName Value="Controls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2205"/>
+        <CursorPos X="15" Y="2222"/>
+        <UsageCount Value="26"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.networking.web.pas"/>
+        <UnitName Value="Codebot.Networking.Web"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="288"/>
+        <CursorPos X="18" Y="315"/>
+        <UsageCount Value="19"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.text.pas"/>
+        <UnitName Value="Codebot.Text"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="387"/>
+        <CursorPos X="39" Y="398"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.cryptography.pas"/>
+        <UnitName Value="Codebot.Cryptography"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="19"/>
+        <CursorPos X="25" Y="28"/>
+        <UsageCount Value="14"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.graphics.pas"/>
+        <UnitName Value="Codebot.Graphics"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2391"/>
+        <CursorPos X="44" Y="2419"/>
+        <UsageCount Value="16"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot_controls/codebot.controls.extras.pas"/>
+        <UnitName Value="Codebot.Controls.Extras"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="96"/>
+        <CursorPos X="3" Y="113"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot_controls/codebot.controls.pas"/>
+        <UnitName Value="Codebot.Controls"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="16"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot_controls/codebot.controls.containers.pas"/>
+        <UnitName Value="Codebot.Controls.Containers"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="52"/>
+        <CursorPos X="15" Y="74"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/extctrls.pp"/>
+        <UnitName Value="ExtCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="176"/>
+        <CursorPos X="3" Y="193"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/include/customform.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2688"/>
+        <CursorPos X="3" Y="2691"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/include/scrollingwincontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="13"/>
+        <CursorPos X="33" Y="32"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/include/wincontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7518"/>
+        <CursorPos X="57" Y="7526"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/lclclasses.pp"/>
+        <UnitName Value="LCLClasses"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="28"/>
+        <CursorPos X="14" Y="60"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/widgetset/wscontrols.pp"/>
+        <UnitName Value="WSControls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="112"/>
+        <CursorPos X="3" Y="144"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/interfaces/gtk2/gtk2wsforms.pp"/>
+        <UnitName Value="Gtk2WSForms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="373"/>
+        <CursorPos X="5" Y="387"/>
+        <UsageCount Value="11"/>
+        <Bookmarks Count="1">
+          <Item0 X="15" Y="374" ID="1"/>
+        </Bookmarks>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../lazarus/lcl/interfaces/gtk2/gtk2globals.pp"/>
+        <UnitName Value="Gtk2Globals"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="125"/>
+        <CursorPos X="34" Y="144"/>
+        <UsageCount Value="11"/>
+        <Bookmarks Count="1">
+          <Item0 X="34" Y="144" ID="2"/>
+        </Bookmarks>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../fpc/packages/gtk2/src/gtk+/gtk/gtkwindow.inc"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="193"/>
+        <CursorPos X="62" Y="218"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../fpc/packages/gtk2/src/gtk+/gtk/gtk2.pas"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="76"/>
+        <CursorPos Y="103"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../fpc/packages/gtk2/src/glib/gtypes.inc"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="21"/>
+        <CursorPos X="25" Y="38"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="436" Column="78" TopLine="416"/>
+        <Filename Value="blackfrm.pas"/>
+        <Caret Line="54" TopLine="40"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="533" Column="5" TopLine="499"/>
+        <Filename Value="blackfrm.pas"/>
+        <Caret Line="67" TopLine="43"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
+        <Filename Value="blackfrm.pas"/>
+        <Caret Line="48" TopLine="41"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="428" Column="73" TopLine="395"/>
+        <Filename Value="blackfrm.pas"/>
+        <Caret Line="79" Column="3" TopLine="50"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="532" Column="73" TopLine="499"/>
+        <Filename Value="blackfrm.pas"/>
+        <Caret Line="48" Column="6" TopLine="31"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
+        <Filename Value="blackfrm.pas"/>
+        <Caret Line="92" Column="87" TopLine="59"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="428" Column="73" TopLine="395"/>
+        <Filename Value="blackfrm.pas"/>
+        <Caret Line="87" Column="34" TopLine="63"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="532" Column="73" TopLine="499"/>
+        <Filename Value="blackfrm.pas"/>
+        <Caret Line="99" TopLine="69"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
+        <Filename Value="blackfrm.pas"/>
+        <Caret Line="59" Column="73" TopLine="42"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="428" Column="73" TopLine="395"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="42" Column="8" TopLine="17"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
-        <Caret Line="517" Column="72" TopLine="499"/>
+        <Filename Value="../../../fpc/packages/gtk2/src/gtk+/gtk/gtkwindow.inc"/>
+        <Caret Line="210" Column="11" TopLine="193"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="29" TopLine="17"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="345" Column="51" TopLine="311"/>
+        <Filename Value="../../../fpc/packages/gtk2/src/gtk+/gtk/gtkwindow.inc"/>
+        <Caret Line="208" Column="50" TopLine="193"/>
       </Position>
       <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="429" TopLine="410"/>
+        <Filename Value="../../../fpc/packages/gtk2/src/gtk+/gtk/gtkwindow.inc"/>
+        <Caret Line="218" Column="62" TopLine="193"/>
       </Position>
       <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="172" Column="3" TopLine="169"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="23" TopLine="20"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="348" Column="23" TopLine="326"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="107" TopLine="76"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="375" Column="35" TopLine="346"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="38" Column="6" TopLine="21"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="366" Column="46" TopLine="337"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="19"/>
       </Position>
       <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="275" Column="26" TopLine="256"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="62" Column="13" TopLine="45"/>
       </Position>
       <Position>
-        <Filename Value="explorefrm.pas"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="18" Column="48"/>
       </Position>
       <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="258" Column="46" TopLine="248"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="84" Column="49" TopLine="66"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="314" Column="53" TopLine="286"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="95" Column="18" TopLine="77"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="78" Column="22" TopLine="43"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="18" Column="48"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="419" Column="36" TopLine="401"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="95" Column="18" TopLine="77"/>
       </Position>
       <Position>
-        <Filename Value="s3graph.pas"/>
-        <Caret Line="412" Column="22" TopLine="401"/>
+        <Filename Value="s3actions.pas"/>
+        <Caret Line="113" Column="62" TopLine="99"/>
       </Position>
       <Position>
-        <Filename Value="c3.lpr"/>
-        <Caret Line="4"/>
+        <Filename Value="s3actions.pas"/>
+        <Caret Line="38" Column="11" TopLine="20"/>
       </Position>
       <Position>
-        <Filename Value="s3objects.pas"/>
+        <Filename Value="s3actions.pas"/>
+        <Caret Line="111" Column="22" TopLine="93"/>
       </Position>
       <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="447" Column="16" TopLine="209"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="47" Column="49" TopLine="78"/>
       </Position>
       <Position>
-        <Filename Value="explorefrm.pas"/>
-        <Caret Line="116" Column="3" TopLine="110"/>
+        <Filename Value="s3actions.pas"/>
+        <Caret Line="106" Column="34" TopLine="94"/>
       </Position>
       <Position>
-        <Filename Value="../../../Libraries/Codebot.Cross/source/codebot/codebot.networking.storage.pas"/>
-        <Caret Line="94" Column="16" TopLine="73"/>
+        <Filename Value="dialogtools.pas"/>
+        <Caret Line="111" Column="37" TopLine="80"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -237,4 +452,22 @@
       <Modes ActiveMode=""/>
     </RunParams>
   </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="../../../lazarus/lcl/interfaces/gtk2/gtk2wsforms.pp"/>
+        <Line Value="388"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="../../../lazarus/lcl/interfaces/gtk2/gtk2wsforms.pp"/>
+        <Line Value="655"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
 </CONFIG>

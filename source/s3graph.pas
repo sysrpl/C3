@@ -24,6 +24,10 @@ uses
   Codebot.Graphics.Types;
 
 const
+  IconFontName = 'Material Design Icons';
+  IconScale = 1.5;
+  SmallIconScale = 1;
+
   iconBucket = '󱐗';
   iconBucketSelect = '󱐖';
   iconFolderPlus = '󰜄';
@@ -39,10 +43,14 @@ const
   iconImage = '󰈟';
   iconText = '󰈙';
   iconVideo = '󰈫';
-  iconBusy = '󰦖';
-  iconSuccess = '󰆀';
-  iconFail = '󰅾';
-  iconCanceled = '󰆇';
+  iconBusy = '󰥔';
+  iconBusySelect = '󰅐';
+  iconSuccess = '󰅿';
+  iconSuccessSelect = '󰆀';
+  iconFail = '󰅽';
+  iconFailSelect = '󰅾';
+  iconCanceled = '󰅙';
+  iconCanceledSelect = '󰅚';
   iconUnchecked = '󰄱';
   iconChecked = '󰄵';
   iconUncheckedPressed = '󰄮';
@@ -84,18 +92,14 @@ implementation
 { TS3Renderer }
 
 constructor TS3Renderer.Create(Font: TFont);
-const
-  IconName = 'Material Design Icons';
-  IconScale = 1.5;
-  SmallIconScale = 1;
 begin
   inherited Create;
   FFont := NewFont(Font);
   FIcon := NewFont(Font);
-  FIcon.Name := IconName;
+  FIcon.Name := IconFontName;
   FIcon.Size := FIcon.Size * IconScale;
   FSmallIcon := NewFont(Font);
-  FSmallIcon.Name := IconName;
+  FSmallIcon.Name := IconFontName;
   FSmallIcon.Size := FSmallIcon.Size * SmallIconScale;
 end;
 
@@ -204,8 +208,8 @@ begin
   for I := 0 to Index  - 1 do
     Result.Left := Result.Left + ColWidths[I];
   Result.Width := ColWidths[Index];
-  {if Result.Right > Rect.Right then
-    Result.Right := Rect.Right;}
+  if Result.Right > Rect.Right then
+    Result.Right := Rect.Right;
   Inflate(Result);
 end;
 
@@ -307,6 +311,7 @@ var
   TextRect: TRectI;
   Folder: IFolder;
   Content: IContent;
+  MinLeft: Integer;
   S: string;
   B: TColorB;
 begin
@@ -355,6 +360,7 @@ begin
       S := iconContent;
     FIcon.Color := colorContent;
     Surface.TextOut(FIcon, S, IconRect, drLeft);
+    MinLeft := IconRect.Right;
     TextRect := IconRect;
     TextRect.Left := IconRect.Right - 4;
     TextRect.Right := Rect.Right;
@@ -362,14 +368,20 @@ begin
     DrawRectState(Surface, TextRect, State, RectRadius);
     TextRect.Right := GetColumn(Rect, ColWidths, 1).Right;
     TextRect.Inflate(-4, 0);
+    if TextRect.Left < MinLeft then
+      TextRect.Left := MinLeft;;
     Surface.TextOut(FFont, Obj.Name, TextRect, drLeft);
     TextRect := GetColumn(Rect, ColWidths, 2);
     TextRect.Inflate(-4, 0);
     S := StrToBytes(Content.Size);
+    if TextRect.Left < MinLeft then
+      TextRect.Left := MinLeft;;
     Surface.TextOut(FFont, S, TextRect, drRight);
     TextRect := GetColumn(Rect, ColWidths, 3);
     TextRect.Inflate(-4, 0);
     S := FormatDateTime('ddd dd mmm yyyy h:nn:ss AM/PM', Content.Modified);
+    if TextRect.Left < MinLeft then
+      TextRect.Left := MinLeft;;
     Surface.TextOut(FFont, S, TextRect, drLeft);
   end
   else
@@ -409,14 +421,14 @@ procedure TS3Renderer.DrawTask(Surface: ISurface; Task: IAsyncTask; Rect: TRectI
 var
   Data: TTaskData;
 
-  procedure DrawText(Rect: TRectI);
+  procedure DrawText(TextRect: TRectI);
   begin
-    Rect.Left := ColWidths[0] - 4;
-    Inflate(Rect);
-    DrawRectState(Surface, Rect, State, RectRadius);
+    TextRect.Left := ColWidths[0] - 4;
+    Inflate(TextRect);
+    DrawRectState(Surface, TextRect, State, RectRadius);
     FFont.Style := FFont.Style - [fsBold];
-    Rect.Left := Rect.Left + 4;
-    Rect.Width := ColWidths[1] - 8;
+    TextRect.Left := TextRect.Left + 4;
+    TextRect.Width := ColWidths[1] - 8;
     Surface.TextOut(FFont, Data.Message, GetColumn(Rect, ColWidths, 1), drLeft);
     Surface.TextOut(FFont, TimeToStr(Task.StartTime), GetColumn(Rect, ColWidths,  2), drLeft);
     Surface.TextOut(FFont, Format('%.0f ms', [Task.Duration * 1000]), GetColumn(Rect, ColWidths, 3), drLeft);
@@ -432,21 +444,29 @@ var
         begin
           FSmallIcon.Color := colorBusy;
           S := iconBusy;
+          if dsSelected in State then
+            S := iconBusySelect;
         end;
       asyncSuccess:
         begin
           FSmallIcon.Color := colorSuccess;
           S := iconSuccess;
+          if dsSelected in State then
+            S := iconSuccessSelect;
         end;
       asyncFail:
         begin
           FSmallIcon.Color := colorFail;
           S := iconFail;
+          if dsSelected in State then
+            S := iconFailSelect;
         end;
       asyncCanceled:
         begin
           FSmallIcon.Color := colorCanceled;
           S := iconCanceled;
+          if dsSelected in State then
+            S := iconCanceledSelect;
         end;
     end;
     R := GetColumn(Rect, ColWidths, 0);

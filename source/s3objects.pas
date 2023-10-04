@@ -76,8 +76,10 @@ type
   ['{769BB824-88B0-4619-9A85-EBDACBD14146}']
     function GetEndPoint: string;
     function GetRegion: string;
+    function GetNull: INullObject;
     property EndPoint: string read GetEndPoint;
     property Region: string read GetRegion;
+    property Null: INullObject read GetNull;
   end;
 
 { IFolder }
@@ -98,6 +100,7 @@ type
     function GetSize: Cardinal;
     function GetModified: TDateTime;
     function GetStorageClass: string;
+    function Presign(Expires: Integer = 0; Shorten: Boolean = False): string;
     property Size: Cardinal read GetSize;
     property Modified: TDateTime read GetModified;
     property StorageClass: string read GetStorageClass;
@@ -153,7 +156,7 @@ type
     function GetBuckets: IBuckets;
     function GetTasks: ITasks;
     { These response handlers implement all task completion logic }
-    procedure ListBuckets(Response: IDocument);
+    procedure ListBuckets(Data: TTaskData; Response: IDocument);
     procedure GetBucketLocation(Data: TTaskData; Response: IDocument);
     procedure ListBucketObjects(Data: TTaskData; Response: IDocument);
     procedure ListFolderObjects(Data: TTaskData; Response: IDocument);
@@ -210,6 +213,7 @@ type
   private
     FEndPoint: string;
     FRegion: string;
+    FNull: INullObject;
     FQueried: Boolean;
     FList: IList<IStorageObject>;
     { IStorageObject }
@@ -227,6 +231,7 @@ type
     { IBucket }
     function GetEndPoint: string;
     function GetRegion: string;
+    function GetNull: INullObject;
   public
     constructor Create(Owner: TS3Manager; Name: string); override;
   end;
@@ -280,6 +285,7 @@ type
     function GetSize: Cardinal;
     function GetModified: TDateTime;
     function GetStorageClass: string;
+    function Presign(Expires: Integer = 0; Shorten: Boolean = False): string;
     { IChildObject }
     procedure SetParent(Value: IStorageContainer);
   end;
@@ -337,7 +343,7 @@ begin
   Result := False;
   if Obj = nil then
     Exit;
-  if (Obj is INullObject) and (Self is Folder) then
+  if (Obj is INullObject) and (Self is IFolder) then
   begin
     Folder := Self as IFolder;
     Result := Folder.Null = Obj as INullObject;
@@ -439,17 +445,25 @@ begin
   Result := FRegion;
 end;
 
-{ TFolder }
-
-constructor TFolder.Create(Owner: TS3Manager; Name: string);
+function TBucket.GetNull: INullObject;
 var
   Child: IChildObject;
 begin
+  if FNull = nil then
+  begin
+    FNull := TNullObject.Create(Owner, 'Empty');
+    Child := FNull as IChildObject;
+    Child.Parent := Self;
+  end;
+  Result := FNull;
+end;
+
+{ TFolder }
+
+constructor TFolder.Create(Owner: TS3Manager; Name: string);
+begin
   inherited Create(Owner, Name);
   FList := TInterfaces<IStorageObject>.Create;
-  FNull := TNullObject.Create(Owner, 'Empty');
-  Child := FNull as IChildObject;
-  Child.Parent := Self;
 end;
 
 { IStorageObject.TFolder }
@@ -510,6 +524,12 @@ begin
     Result := GetPrefix(Folder.Parent as IFolder) + Result;
 end;
 
+function GetPrefixMin(Folder: IFolder): string;
+begin
+  Result := GetPrefix(Folder);
+  Result.Length := Result.Length - 1;
+end;
+
 procedure TFolder.Query;
 var
   Request: TS3Request;
@@ -530,8 +550,8 @@ begin
   Prefix := GetPrefix(Folder);
   Request := Owner.S3.ListObjects(Bucket.Name, '', Prefix, '/');
   Prefix.Length := Prefix.Length - 1;
-  Data := TTaskData.Create(Self as IFolder, taskListFolderObjects, 'List ' +
-    GetBucket.Name + '/' + Prefix);
+  Data := TTaskData.Create(Self as IFolder, taskListFolderObjects, 'Listing objects in folder ' +
+    GetBucket.Name + '/' + GetPrefixMin(Folder));
   Owner.TaskStart(Request, Data);
 end;
 
@@ -550,7 +570,15 @@ begin
 end;
 
 function TFolder.GetNull: INullObject;
+var
+  Child: IChildObject;
 begin
+  if FNull = nil then
+  begin
+    FNull := TNullObject.Create(Owner, 'Empty');
+    Child := FNull as IChildObject;
+    Child.Parent := Self;
+  end;
   Result := FNull;
 end;
 
@@ -603,6 +631,20 @@ end;
 function TContent.GetStorageClass: string;
 begin
   Result := FStorageClass;
+end;
+
+function TContent.Presign(Expires: Integer = 0; Shorten: Boolean = False): string;
+var
+  Path: string;
+begin
+  Path := FName;
+  if GetParent is IFolder then
+    Path := GetPrefixMin(GetParent as IFolder) + '/' + Path;
+  Result := Owner.FS3.Presign(GetBucket.Name, Path, Expires);
+  if Shorten then
+  begin
+
+  end;
 end;
 
 { TContent.IChildObject }
@@ -677,7 +719,7 @@ var
 begin
   Buckets.Clear;
   Request := S3.ListBuckets;
-  Data := TTaskData.Create(nil, taskListBuckets, 'List buckets on ' + S3.Config.EndPoint);
+  Data := TTaskData.Create(nil, taskListBuckets, 'List buckets on service ' + S3.Config.EndPoint);
   TaskStart(Request, Data);
 end;
 
@@ -719,14 +761,21 @@ end;
 
 { All completion logic is handled by the manager }
 
-procedure TS3Manager.ListBuckets(Response: IDocument);
+procedure TS3Manager.ListBuckets(Data: TTaskData; Response: IDocument);
 var
   Bucket: IBucket;
   Request: TS3Request;
-  Data: TTaskData;
+  List: INodeList;
   N: INode;
+  S: string;
 begin
-  for N in Response.Root.SelectList('//Bucket/Name') do
+  List := Response.Root.SelectList('//Bucket/Name');
+  if List.Count = 1 then
+    S := ''
+  else
+    S := 's';
+  Data.Message := Format('Service %s has %d bucket%s', [S3.Config.EndPoint, List.Count, S]);
+  for N in List do
   begin
     Bucket := TBucket.Create(Self, N.Text);
     Request := S3.GetBucketLocation(Bucket.Name);
@@ -750,6 +799,7 @@ begin
   BucketObj.FRegion := Region;
   BucketObj.FEndPoint := S3.Config.EndPoint(Region);
   S3.AddRegion(Bucket.Name, Region);
+  Data.Message := Format('Bucket %s is located in region %s', [Bucket.Name, Bucket.Region]);
 end;
 
 function CleanName(Name: string): string;
@@ -814,7 +864,7 @@ begin
     S := ''
   else
     S := 's';
-  Data.Message := Data.Message + Format(' (found %d object%s)', [Bucket.Count, S]);
+  Data.Message := Format('Found %d object%s in bucket %s', [Bucket.Count, S, Bucket.Name]);
 end;
 
 procedure TS3Manager.ListFolderObjects(Data: TTaskData; Response: IDocument);
@@ -845,6 +895,8 @@ begin
     S := CleanName(F.ReadStr('Key'));
     if S = '' then
       Continue;
+    if (F.ReadInt64('Size') = 0) and (S = Folder.Name) then
+      Continue;
     Content := TContent.Create(Self, S);
     (Content as IChildObject).SetParent(Folder);
     ContentObj := Content as TContent;
@@ -857,7 +909,7 @@ begin
     S := ''
   else
     S := 's';
-  Data.Message := Data.Message + Format(' (found %d object%s)', [Folder.Count, S]);
+  Data.Message := Format('Found %d object%s in folder %s/%s', [Folder.Count, S, Folder.Bucket.Name, GetPrefixMin(Folder)]);
 end;
 
 procedure TS3Manager.TaskComplete(Task: IAsyncTask; Result: IDocument);
@@ -866,15 +918,12 @@ var
 begin
   Data := Task.Data as TTaskData;
   if Task.Status = asyncCanceled then
-  begin
-    Data.Error := NewDocument;
-    Data.Error.Force('Cancelled');
-  end
+    Data.Error := Result
   else if Task.Status = asyncFail then
     Data.Error := Result
   else if Task.Status = asyncSuccess then
     case Data.Kind of
-      taskListBuckets: ListBuckets(Result);
+      taskListBuckets: ListBuckets(Data, Result);
       taskGetBucketLocation: GetBucketLocation(Data, Result);
       taskListBucketObjects: ListBucketObjects(Data, Result);
       taskListFolderObjects: ListFolderObjects(Data, Result);
